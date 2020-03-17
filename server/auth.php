@@ -61,7 +61,7 @@ function copy_token_to_client() {
     echo(
         '<script>
             localStorage.setItem("'.$TOKEN_LOCAL_STORAGE_KEY.'", "'.$_SESSION["token"].'");
-            window.location.href = "'.$_SESSION["auth_done_redirect"].'";
+            window.location.replace("'.$_SESSION["auth_done_redirect"].'");
         </script>'
     );
 }
