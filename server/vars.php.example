@@ -2,5 +2,4 @@
 $client_id = "";
 $client_secret = "";
 $auth_url="";
-$app_url = "";
 ?>
