@@ -3,7 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  oauthUrl: "http://localhost/Slack-Imposter/server/auth.php",
+  thisUrl: ""
 };
 
 /*
