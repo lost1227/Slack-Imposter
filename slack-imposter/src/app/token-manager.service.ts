@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 import { environment } from '../environments/environment'
 
 @Injectable({
@@ -6,14 +6,14 @@ import { environment } from '../environments/environment'
 })
 export class TokenManager {
 
-    static readonly TOKEN_LOCAL_STORAGE_KEY = "slack-token";
+    static readonly TOKEN_LOCAL_STORAGE_KEY = "csrf-token"
 
     hasToken() : boolean {
         return  this.getToken() != null
     }
 
-    getToken() : String {
-        return localStorage.getItem(TokenManager.TOKEN_LOCAL_STORAGE_KEY)
+    getToken() : string {
+        return sessionStorage.getItem(TokenManager.TOKEN_LOCAL_STORAGE_KEY)
     }
 
     startAuth() : void {

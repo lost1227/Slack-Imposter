@@ -1,56 +1,64 @@
-import { WebClient } from '@slack/web-api'
 import { Injectable } from '@angular/core'
+import { HttpClient, HttpErrorResponse } from '@angular/common/http'
+
+import { TokenManager } from './token-manager.service'
+import { environment } from '../environments/environment'
+import { catchError, map } from 'rxjs/operators'
+import { Observable, throwError } from 'rxjs'
+
 
 @Injectable({
     providedIn: 'root'
 })
 export class Messenger {
-    slack: WebClient
 
-    constructor(token: string) {
-        this.slack = new WebClient(token);
+    private token: string
+
+    constructor(private http: HttpClient, private tokenManager: TokenManager) {
+        if(this.tokenManager.hasToken()) {
+            this.token = this.tokenManager.getToken()
+        } else {
+            this.tokenManager.startAuth();
+        }
+        
     }
 
-    async getUserInfo(userid: string) {
-        return this.slack.users.info({
-            user: userid
-        })
+    private handleError(error: HttpErrorResponse) {
+        if (error.error instanceof ErrorEvent) {
+            // A client-side or network error occurred. Handle it accordingly.
+            console.error('An error occurred:', error.error.message);
+        } else {
+            // The backend returned an unsuccessful response code.
+            // The response body may contain clues as to what went wrong,
+            if(error.status == 400 && ["Error: invalid token", "Error: not authed"].includes(error.error)) {
+                this.tokenManager.startAuth()
+                return throwError("Reauthentication required")
+            }
+            console.error(
+                `Backend returned code ${error.status}, ` +
+                `body was: ${error.error}`);
+        }
+        return throwError('Something bad happened; please try again later')
+          
     }
 
-    async getAllUsers(): Promise<Array<Messenger.User>> {
-        return this.slack.paginate('users.list', {}, () => false, (accumulator, page, index) => {
-            if(accumulator == null) {
-                accumulator = []
-            }
-            for (const member of (page.members as Array<any>)) {
-                accumulator.push(new Messenger.User(
-                    member.id,
-                    member.name,
-                    member.profile.real_name,
-                    member.profile.display_name,
-                    member.profile.image_72
-                ))
-            }
-            return accumulator
-        })
+    getAllUsers(): Observable<Array<Messenger.User>> {
+        return this.http.post<Array<Messenger.User>>(environment.apiUrl, {
+            "csrf-token": this.token,
+            "method": "list"
+        }).pipe(
+            catchError((error: HttpErrorResponse) => this.handleError(error))
+        )
     }
 }
 
 export namespace Messenger {
-    export class User {
+    export interface User {
         id: string
         name: string
         real_name: string
         display_name: string
         image: string
-
-        constructor(id: string, name: string, real_name: string, display_name: string, image: string) {
-            this.id = id
-            this.name = name
-            this.real_name = real_name
-            this.display_name = display_name
-            this.image = image
-        }
     }
 }
 

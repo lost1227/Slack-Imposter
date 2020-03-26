@@ -5,7 +5,7 @@ session_start();
 
 require_once 'vars.php';
 
-$TOKEN_LOCAL_STORAGE_KEY = "slack-token";
+$TOKEN_LOCAL_STORAGE_KEY = "csrf-token";
 
 $SLACK_OAUTH_REDIRECT = "https://slack.com/oauth/v2/authorize";
 
@@ -58,9 +58,10 @@ function redirectToLogin() {
 
 function copy_token_to_client() {
     global $TOKEN_LOCAL_STORAGE_KEY;
+    $_SESSION["csrf-token"] = bin2hex(openssl_random_pseudo_bytes(16));
     echo(
         '<script>
-            localStorage.setItem("'.$TOKEN_LOCAL_STORAGE_KEY.'", "'.$_SESSION["token"].'");
+            sessionStorage.setItem("'.$TOKEN_LOCAL_STORAGE_KEY.'", "'.$_SESSION["csrf-token"].'");
             window.location.replace("'.$_SESSION["auth_done_redirect"].'");
         </script>'
     );
@@ -70,7 +71,7 @@ if(isset($_GET["redirect"])) {
     $_SESSION["auth_done_redirect"] = $_GET["redirect"];
 }
 
-if(isset($_SESSION["token"])) {
+if(isset($_SESSION["slack-token"])) {
     copy_token_to_client();
 } elseif(isset($_GET["code"]) && isset($_GET["state"]) && isset($_SESSION["oauth_state"]) && $_GET["state"] === $_SESSION["oauth_state"]) {
     unset($_SESSION["oauth_state"]);
@@ -89,7 +90,7 @@ if(isset($_SESSION["token"])) {
 
     $token = $tokendata["access_token"];
 
-    $_SESSION["token"] = $token;
+    $_SESSION["slack-token"] = $token;
 
     copy_token_to_client();
 
