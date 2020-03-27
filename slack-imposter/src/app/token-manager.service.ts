@@ -17,6 +17,6 @@ export class TokenManager {
     }
 
     startAuth() : void {
-        window.location.assign(environment.oauthUrl + "?redirect=" + encodeURIComponent(environment.thisUrl))
+        window.location.assign(environment.oauthUrl + "?redirect=" + encodeURIComponent(window.location.href))
     }
 }

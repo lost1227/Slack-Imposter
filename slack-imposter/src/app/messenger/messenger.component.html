@@ -7,13 +7,13 @@
     <form [formGroup]="messageForm" (ngSubmit)="onSubmit(messageForm.value)">
         <mat-form-field appearance="fill">
             <mat-label>Channel</mat-label>
-            <mat-select id="channel" formControlName="channel" (change)="validate(messageForm.value)" required>
+            <mat-select id="channel" formControlName="channel" (change)="validate(messageForm.value)">
                 <mat-option *ngFor="let channel of channels" [value]="channel.id">#{{channel.name}}</mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field>
             <mat-label>Message</mat-label>
-            <textarea matInput formControlName="message" (input)="validate(messageForm.value)" required></textarea>
+            <textarea matInput formControlName="message" (input)="validate(messageForm.value)"></textarea>
         </mat-form-field>
         <button mat-raised-button class="submit" color="primary" type="submit" [disabled]="!formIsValid">Post</button>
     </form>

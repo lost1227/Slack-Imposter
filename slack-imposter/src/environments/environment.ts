@@ -5,7 +5,6 @@
 export const environment = {
   production: false,
   oauthUrl: "http://localhost/Slack-Imposter/server/auth.php",
-  thisUrl: "http://localhost/Slack-Imposter/slack-imposter/dist/slack-imposter/",
   apiUrl: "http://localhost/Slack-Imposter/server/api.php"
 };
 

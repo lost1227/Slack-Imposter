@@ -7,6 +7,7 @@ import { switchMap } from 'rxjs/operators';
 import { Messenger } from '../messenger.service';
 
 import { FormBuilder } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-messenger',
@@ -27,7 +28,8 @@ export class MessengerComponent implements OnInit {
     private router: Router,
     private userDataManager: UserDataManager,
     private messenger: Messenger,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private snackBar: MatSnackBar
     ) {
 
       this.messageForm = this.formBuilder.group({
@@ -72,6 +74,9 @@ export class MessengerComponent implements OnInit {
       return
     }
     this.messenger.postMessage(messageData.message, channel, this.user).subscribe()
+    this.snackBar.open("Success!", '', {
+      duration: 5 * 1000
+    });
     this.messageForm.reset()
   }
 
