@@ -3,3 +3,9 @@ div.centerdiv {
     max-width: 1000px;
     margin: auto;
 }
+span.home {
+    cursor: pointer;
+}
+span.home:hover {
+    text-decoration: underline;
+}
