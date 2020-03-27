@@ -59,13 +59,15 @@ class SlackClient {
             }
 
             foreach($response["members"] as $member) {
-                $users[] = array(
-                    "id"=>$member["id"],
-                    "name"=>$member["name"],
-                    "real_name"=>$member["profile"]["real_name"],
-                    "display_name"=>$member["profile"]["display_name"],
-                    "image"=>$member["profile"]["image_512"]
-                );
+                if(!isset($member["deleted"]) || $member["deleted"] === false) {
+                    $users[] = array(
+                        "id"=>$member["id"],
+                        "name"=>$member["name"],
+                        "real_name"=>$member["profile"]["real_name"],
+                        "display_name"=>$member["profile"]["display_name"],
+                        "image"=>$member["profile"]["image_512"]
+                    );
+                }
             }
 
             if(
