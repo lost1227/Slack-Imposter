@@ -50,6 +50,23 @@ switch($postdata["method"]) {
     case "list_channels":
         echo(json_encode($client->channels_list()));
     break;
+    case "post_message":
+        if(
+            !isset($postdata["channel"])
+            || !isset($postdata["text"])
+            || !isset($postdata["icon_url"])
+            || !isset($postdata["username"])
+        ) {
+            error_out("Error: invalid parameters");
+        }
+        $result = $client->chat_postMessage($postdata["channel"], $postdata["text"], $postdata["icon_url"], $postdata["username"]);
+        if($result === true) {
+            echo(json_encode(array("ok" => true)));
+        } else {
+            http_response_code(500);
+            die("Error: api error");
+        }
+    break;
     default:
         error_out("Error: invalid method");
     break;

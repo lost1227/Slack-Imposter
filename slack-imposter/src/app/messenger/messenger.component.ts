@@ -6,6 +6,8 @@ import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { Messenger } from '../messenger.service';
 
+import { FormBuilder } from '@angular/forms';
+
 @Component({
   selector: 'app-messenger',
   templateUrl: './messenger.component.html',
@@ -13,22 +15,55 @@ import { Messenger } from '../messenger.service';
 })
 export class MessengerComponent implements OnInit {
 
-  user: Observable<UserDataManager.User>
-  channels: Observable<Array<Messenger.Channel>>
+  user: UserDataManager.User
+  channels: Array<Messenger.Channel>
+
+  messageForm
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private userDataManager: UserDataManager,
-    private messenger: Messenger
-    ) { }
+    private messenger: Messenger,
+    private formBuilder: FormBuilder
+    ) {
+
+      this.messageForm = this.formBuilder.group({
+        channel: '',
+        message: ''
+      })
+
+    }
 
   ngOnInit(): void {
-    this.user = this.route.paramMap.pipe(
+    this.route.paramMap.pipe(
       switchMap((params: ParamMap) =>
       this.userDataManager.getSingleUser(params.get('id')))
-    )
-    this.channels = this.messenger.getAllChannels()
+    ).subscribe((user: UserDataManager.User) => this.user = user)
+
+    this.messenger.getAllChannels().subscribe((channels: Array<Messenger.Channel>) => this.channels = channels);
+  }
+
+  onSubmit(messageData) {
+    if(!messageData.channel) {
+      console.warn("Cannot submit to empty channel")
+      return
+    }
+    let channel = this.channels.find((it: Messenger.Channel) => it.id == messageData.channel)
+    if(!channel) {
+      console.warn("Cannot submit to nonexistent channel")
+      return
+    }
+    if(!messageData.message) {
+      console.warn("Cannot submit empty message")
+      return
+    }
+    if(!this.user) {
+      console.warn("Cannot submit with null user")
+      return
+    }
+    this.messenger.postMessage(messageData.message, channel, this.user).subscribe()
+    this.messageForm.reset()
   }
 
 }

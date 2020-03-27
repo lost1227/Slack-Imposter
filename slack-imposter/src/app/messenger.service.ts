@@ -5,6 +5,7 @@ import { TokenManager } from './token-manager.service'
 import { environment } from '../environments/environment'
 import { catchError } from 'rxjs/operators'
 import { Observable, throwError, of } from 'rxjs'
+import { UserDataManager } from './user-data-manager';
 
 @Injectable({
     providedIn: 'root'
@@ -55,6 +56,19 @@ export class Messenger {
             return of(this.cache)
         }
     }
+
+    postMessage(message: string, channel: Messenger.Channel, user: UserDataManager.User): Observable<Messenger.Result> {
+        return this.http.post<Messenger.Result>(environment.apiUrl, {
+            "csrf-token": this.token,
+            "method": "post_message",
+            "channel": channel.id,
+            "text": message,
+            "icon_url": user.image,
+            "username": user.name
+        }).pipe(
+            catchError((error: HttpErrorResponse) => this.handleError(error))
+        )
+    }
     
 }
 
@@ -62,5 +76,8 @@ export namespace Messenger {
     export interface Channel {
         id: string
         name: string
+    }
+    export interface Result {
+        ok: boolean
     }
 }

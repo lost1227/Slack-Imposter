@@ -11,6 +11,8 @@ import { UserListItemComponent } from './user-list-item/user-list-item.component
 import { MessengerComponent } from './messenger/messenger.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
+import { ReactiveFormsModule } from '@angular/forms'
+
 const appRoutes : Routes = [
   {
     path: 'user/:id',
@@ -42,6 +44,7 @@ const appRoutes : Routes = [
       appRoutes,
       {enableTracing: false}
     ),
+    ReactiveFormsModule,
     BrowserModule,
     HttpClientModule
   ],

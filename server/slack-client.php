@@ -9,7 +9,21 @@ class SlackClient {
     private function get_query(string $url, array $data) {
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url.'?'.http_build_query($data));
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $data = curl_exec($curl);
+        curl_close($curl);
+        return $data;
+    }
+
+    private function post_query_json(string $url, array $data) {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Authorization: Bearer '.$this->token
+        ));
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
         $data = curl_exec($curl);
         curl_close($curl);
         return $data;
@@ -134,6 +148,28 @@ class SlackClient {
             }
         }
         return $channels;
+    }
+
+    function chat_postMessage(string $channel, string $text, string $icon_url, string $username) {
+        $data = array(
+            "channel" => $channel,
+            "text" => $text,
+            "icon_url" => $icon_url,
+            "username" => $username
+        );
+        $response = $this->post_query_json("https://slack.com/api/chat.postMessage", $data);
+        $response = json_decode($response, true);
+
+        if(!isset($response["ok"]) || !$response["ok"]) {
+            $message = "[BLANK]";
+            if(isset($response["error"])) {
+                $message = $response["error"];
+            }
+            $this->error("chat_postMessage", $response["error"]);
+            return false;
+        }
+
+        return true;
     }
 }
 ?>

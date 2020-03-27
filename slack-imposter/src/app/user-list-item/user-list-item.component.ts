@@ -10,18 +10,9 @@ export class UserListItemComponent implements OnInit {
 
   @Input() user: UserDataManager.User
 
-  displayName: String
-
   constructor() { }
 
   ngOnInit(): void {
-    this.displayName = this.user.display_name
-    if(!this.displayName) {
-      this.displayName = this.user.real_name
-    }
-    if(!this.displayName) {
-      this.displayName = this.user.name
-    }
   }
 
 }

@@ -1,4 +1,8 @@
-<p>{{(user | async)?.id}}</p>
-<div>
-    <p *ngFor="let channel of channels | async">{{channel.id}} => {{channel.name}}</p>
-</div>
+<p>{{user?.id}}</p>
+<form [formGroup]="messageForm" (ngSubmit)="onSubmit(messageForm.value)">
+    <select id="channel" formControlName="channel" required>
+        <option *ngFor="let channel of channels" [value]="channel.id">#{{channel.name}}</option>
+    </select>
+    <textarea id="message" formControlName="message" rows="4" cols="50" required></textarea>
+    <button class="button" type="submit">Send</button>
+</form>
