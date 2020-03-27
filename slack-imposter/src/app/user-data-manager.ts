@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 
 import { TokenManager } from './token-manager.service'
 import { environment } from '../environments/environment'
-import { catchError, map } from 'rxjs/operators'
+import { catchError } from 'rxjs/operators'
 import { Observable, throwError, of } from 'rxjs'
 
 
@@ -48,7 +48,7 @@ export class UserDataManager {
         if(this.cache == null) {
             let query = this.http.post<Array<UserDataManager.User>>(environment.apiUrl, {
                 "csrf-token": this.token,
-                "method": "list"
+                "method": "list_users"
             }).pipe(
                 catchError((error: HttpErrorResponse) => this.handleError(error))
             )
@@ -69,7 +69,7 @@ export class UserDataManager {
         } else {
             return this.http.post<UserDataManager.User>(environment.apiUrl, {
                 "csrf-token": this.token,
-                "method": "single",
+                "method": "single_user",
                 "id": id
             }).pipe(
                 catchError((error: HttpErrorResponse) => this.handleError(error))

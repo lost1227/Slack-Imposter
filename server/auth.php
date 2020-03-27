@@ -9,7 +9,7 @@ $TOKEN_LOCAL_STORAGE_KEY = "csrf-token";
 
 $SLACK_OAUTH_REDIRECT = "https://slack.com/oauth/v2/authorize";
 
-$SLACK_SCOPES = "chat:write,chat:write.customize,chat:write.public,users:read";
+$SLACK_SCOPES = "chat:write,chat:write.customize,chat:write.public,users:read,channels:read";
 
 $SLACK_TOKEN_EXCHANGE_URL = "https://slack.com/api/oauth.v2.access";
 

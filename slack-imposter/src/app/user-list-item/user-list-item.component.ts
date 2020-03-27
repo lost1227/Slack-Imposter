@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { UserDataManager } from '../UserDataManager.service';
+import { UserDataManager } from '../user-data-manager';
 
 @Component({
   selector: 'app-user-list-item',

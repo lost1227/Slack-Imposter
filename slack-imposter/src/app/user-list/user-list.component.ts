@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserDataManager } from '../UserDataManager.service';
+import { UserDataManager } from '../user-data-manager';
 
 @Component({
   selector: 'app-user-list',

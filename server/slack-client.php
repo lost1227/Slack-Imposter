@@ -92,5 +92,48 @@ class SlackClient {
             "image"=>$member["profile"]["image_512"]
         );   
     }
+
+    function channels_list() {
+        $cursor = "first";
+        $channels = array();
+        while(!empty($cursor)) {
+            $data = array();
+            $data["token"] = $this->token;
+            if($cursor !== "first") {
+                $data["cursor"] = $cursor;
+            }
+            $data["exclude_archived"] = true;
+            $data["types"] = "public_channel";
+
+            $response = $this->get_query("https://slack.com/api/conversations.list", $data);
+            $response = json_decode($response, true);
+
+            if(!isset($response["ok"]) || !$response["ok"]) {
+                $message = "[BLANK]";
+                if(isset($response["error"])) {
+                    $message = $response["error"];
+                }
+                $this->error("channels_list", $message);
+                break;
+            }
+
+            foreach($response["channels"] as $channel) {
+                $channels[] = array(
+                    "id"=>$channel["id"],
+                    "name"=>$channel["name"]
+                );
+            }
+
+            if(
+                isset($response["response_metadata"])
+                && isset($response["response_metadata"]["next_cursor"])
+            ) {
+                $cursor = $response["response_metadata"]["next_cursor"];
+            } else {
+                $cursor = "";
+            }
+        }
+        return $channels;
+    }
 }
 ?>

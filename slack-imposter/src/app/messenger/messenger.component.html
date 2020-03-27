@@ -1,1 +1,4 @@
 <p>{{(user | async)?.id}}</p>
+<div>
+    <p *ngFor="let channel of channels | async">{{channel.id}} => {{channel.name}}</p>
+</div>

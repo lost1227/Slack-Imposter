@@ -34,10 +34,10 @@ require_once 'slack-client.php';
 $client = new SlackClient($_SESSION["slack-token"]);
 
 switch($postdata["method"]) {
-    case "list":
+    case "list_users":
         echo(json_encode($client->users_list()));
     break;
-    case "single":
+    case "single_user":
         if(!isset($postdata["id"])) {
             error_out("Error: invalid parameters");
         }
@@ -46,6 +46,9 @@ switch($postdata["method"]) {
             error_out("Error: invalid parameters");
         }
         echo(json_encode($info));
+    break;
+    case "list_channels":
+        echo(json_encode($client->channels_list()));
     break;
     default:
         error_out("Error: invalid method");
