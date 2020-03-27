@@ -1,3 +1,8 @@
-<div>
-    <app-user-list-item *ngFor="let user of users | async" [user]="user"></app-user-list-item>
+<div id="maindiv">
+<mat-grid-list cols="3" rowheight="1:1">
+    <mat-grid-tile *ngFor="let user of users | async" [routerLink]="['/user',user.id]">
+        <img class="tileimg" [src]="user.image" [alt]="user.name">
+        <mat-grid-tile-footer>{{user.name}}</mat-grid-tile-footer>
+    </mat-grid-tile>
+</mat-grid-list>
 </div>

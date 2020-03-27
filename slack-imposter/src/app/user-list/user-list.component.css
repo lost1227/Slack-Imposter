@@ -1,0 +1,12 @@
+img.tileimg {
+    width: 100%;
+}
+
+#maindiv {
+    max-width: 1000px;
+    margin: auto;
+}
+
+mat-grid-tile {
+    cursor: pointer;
+}

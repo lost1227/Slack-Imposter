@@ -7,11 +7,13 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { UserListComponent } from './user-list/user-list.component';
-import { UserListItemComponent } from './user-list-item/user-list-item.component';
 import { MessengerComponent } from './messenger/messenger.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 
 import { ReactiveFormsModule } from '@angular/forms'
+
+import { MatGridListModule, MatGridList } from '@angular/material/grid-list';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const appRoutes : Routes = [
   {
@@ -35,7 +37,6 @@ const appRoutes : Routes = [
   declarations: [
     AppComponent,
     UserListComponent,
-    UserListItemComponent,
     MessengerComponent,
     NotFoundComponent
   ],
@@ -46,7 +47,9 @@ const appRoutes : Routes = [
     ),
     ReactiveFormsModule,
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent]
