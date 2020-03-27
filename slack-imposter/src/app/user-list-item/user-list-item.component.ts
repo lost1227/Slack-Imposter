@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Messenger } from '../messenger.service';
+import { UserDataManager } from '../UserDataManager.service';
 
 @Component({
   selector: 'app-user-list-item',
@@ -8,7 +8,7 @@ import { Messenger } from '../messenger.service';
 })
 export class UserListItemComponent implements OnInit {
 
-  @Input() user: Messenger.User
+  @Input() user: UserDataManager.User
 
   displayName: String
 

@@ -65,5 +65,32 @@ class SlackClient {
         }
         return $users;
     }
+
+    function user_info(string $id) {
+        $data = array(
+            "token" => $this->token,
+            "user" => $id
+        );
+        $response = $this->get_query("https://slack.com/api/users.info", $data);
+        $response = json_decode($response, true);
+
+        if(!isset($response["ok"]) || !$response["ok"]) {
+            $message = "[BLANK]";
+            if(isset($response["error"])) {
+                $message = $response["error"];
+            }
+            $this->error("user_info", $message);
+            return null;
+        }
+
+        $member = $response["user"];
+        return array(
+            "id"=>$member["id"],
+            "name"=>$member["name"],
+            "real_name"=>$member["profile"]["real_name"],
+            "display_name"=>$member["profile"]["display_name"],
+            "image"=>$member["profile"]["image_512"]
+        );   
+    }
 }
 ?>

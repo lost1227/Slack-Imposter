@@ -4,15 +4,17 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http'
 import { TokenManager } from './token-manager.service'
 import { environment } from '../environments/environment'
 import { catchError, map } from 'rxjs/operators'
-import { Observable, throwError } from 'rxjs'
+import { Observable, throwError, of } from 'rxjs'
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class Messenger {
+export class UserDataManager {
 
     private token: string
+
+    private cache: Array<UserDataManager.User> = null
 
     constructor(private http: HttpClient, private tokenManager: TokenManager) {
         if(this.tokenManager.hasToken()) {
@@ -42,17 +44,41 @@ export class Messenger {
           
     }
 
-    getAllUsers(): Observable<Array<Messenger.User>> {
-        return this.http.post<Array<Messenger.User>>(environment.apiUrl, {
-            "csrf-token": this.token,
-            "method": "list"
-        }).pipe(
-            catchError((error: HttpErrorResponse) => this.handleError(error))
-        )
+    getAllUsers(): Observable<Array<UserDataManager.User>> {
+        if(this.cache == null) {
+            let query = this.http.post<Array<UserDataManager.User>>(environment.apiUrl, {
+                "csrf-token": this.token,
+                "method": "list"
+            }).pipe(
+                catchError((error: HttpErrorResponse) => this.handleError(error))
+            )
+
+            query.subscribe((users: Array<UserDataManager.User>) => this.cache = users)
+
+            return query
+        } else {
+            return of(this.cache)
+        }
+        
+    }
+
+    getSingleUser(id: string): Observable<UserDataManager.User> {
+        let cached = this.cache?.find((value) => value.id == id)
+        if(cached) {
+            return of(cached)
+        } else {
+            return this.http.post<UserDataManager.User>(environment.apiUrl, {
+                "csrf-token": this.token,
+                "method": "single",
+                "id": id
+            }).pipe(
+                catchError((error: HttpErrorResponse) => this.handleError(error))
+            )
+        }
     }
 }
 
-export namespace Messenger {
+export namespace UserDataManager {
     export interface User {
         id: string
         name: string

@@ -37,6 +37,16 @@ switch($postdata["method"]) {
     case "list":
         echo(json_encode($client->users_list()));
     break;
+    case "single":
+        if(!isset($postdata["id"])) {
+            error_out("Error: invalid parameters");
+        }
+        $info = $client->user_info($postdata["id"]);
+        if($info === null) {
+            error_out("Error: invalid parameters");
+        }
+        echo(json_encode($info));
+    break;
     default:
         error_out("Error: invalid method");
     break;

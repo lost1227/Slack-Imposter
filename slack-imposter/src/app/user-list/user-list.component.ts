@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Messenger } from '../messenger.service';
+import { UserDataManager } from '../UserDataManager.service';
 
 @Component({
   selector: 'app-user-list',
@@ -8,12 +8,12 @@ import { Messenger } from '../messenger.service';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-  users: Observable<Array<Messenger.User>>
+  users: Observable<Array<UserDataManager.User>>
 
-  constructor(private messenger: Messenger) { }
+  constructor(private userDataManager: UserDataManager) { }
 
   ngOnInit(): void {
-    this.users = this.messenger.getAllUsers()
+    this.users = this.userDataManager.getAllUsers()
   }
 
 }
