@@ -1,16 +1,20 @@
-<p>{{user?.id}}</p>
-<form [formGroup]="messageForm" (ngSubmit)="onSubmit(messageForm.value)">
-    <mat-form-field appearance="fill">
-        <mat-label>Channel</mat-label>
-        <mat-select id="channel" formControlName="channel" (change)="validate(messageForm.value)" required>
-            <mat-option *ngFor="let channel of channels" [value]="channel.id">#{{channel.name}}</mat-option>
-        </mat-select>
-    </mat-form-field>
-    <br>
-    <mat-form-field>
-        <mat-label>Message</mat-label>
-        <textarea matInput formControlName="message" (input)="validate(messageForm.value)" required></textarea>
-    </mat-form-field>
-    <br>
-    <button mat-raised-button color="primary" type="submit" [disabled]="!formIsValid">Post</button>
-</form>
+<div id="maindiv">
+    <div class="imgcontainer">
+        <img class="tileimg" [src]="user?.image" [alt]="user?.name">
+        <div class="overlay"><span class="overlay">{{user?.name}}</span></div>
+        <!--<mat-grid-tile-footer>{{user?.name}}</mat-grid-tile-footer>-->
+    </div>
+    <form [formGroup]="messageForm" (ngSubmit)="onSubmit(messageForm.value)">
+        <mat-form-field appearance="fill">
+            <mat-label>Channel</mat-label>
+            <mat-select id="channel" formControlName="channel" (change)="validate(messageForm.value)" required>
+                <mat-option *ngFor="let channel of channels" [value]="channel.id">#{{channel.name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Message</mat-label>
+            <textarea matInput formControlName="message" (input)="validate(messageForm.value)" required></textarea>
+        </mat-form-field>
+        <button mat-raised-button class="submit" color="primary" type="submit" [disabled]="!formIsValid">Post</button>
+    </form>
+</div>

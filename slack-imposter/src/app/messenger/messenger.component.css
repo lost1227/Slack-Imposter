@@ -1,0 +1,44 @@
+mat-form-field {
+    display: block;
+}
+#maindiv {
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+button.submit {
+    float: right;
+}
+div.imgcontainer {
+    width: 250px;
+    height: 250px;
+    position: relative;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4px;
+}
+img.tileimg {
+    width: 100%;
+}
+div.overlay {
+    height: 48px;
+    line-height: 48px;
+    text-align: left;
+    color: #fff;
+    background: rgba(0,0,0,.38);
+    overflow: hidden;
+    padding: 0 16px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    font-size: 14px;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+span.overlay {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
