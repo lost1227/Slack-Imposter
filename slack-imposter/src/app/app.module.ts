@@ -14,6 +14,10 @@ import { ReactiveFormsModule } from '@angular/forms'
 
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const appRoutes : Routes = [
@@ -51,7 +55,11 @@ const appRoutes : Routes = [
     HttpClientModule,
     BrowserAnimationsModule,
     MatGridListModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]

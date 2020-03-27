@@ -20,6 +20,8 @@ export class MessengerComponent implements OnInit {
 
   messageForm
 
+  formIsValid : Boolean = false
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -41,7 +43,14 @@ export class MessengerComponent implements OnInit {
       this.userDataManager.getSingleUser(params.get('id')))
     ).subscribe((user: UserDataManager.User) => this.user = user)
 
-    this.messenger.getAllChannels().subscribe((channels: Array<Messenger.Channel>) => this.channels = channels);
+    this.messenger.getAllChannels().subscribe((channels: Array<Messenger.Channel>) => {
+      this.channels = channels
+      this.validate(this.messageForm.value);
+    });
+  }
+
+  validate(messageData) {
+    this.formIsValid = messageData.channel && messageData.message && (this.user != null)
   }
 
   onSubmit(messageData) {
