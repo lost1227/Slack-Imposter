@@ -12,7 +12,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 
 import { ReactiveFormsModule } from '@angular/forms'
 
-import { MatGridListModule, MatGridList } from '@angular/material/grid-list';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const appRoutes : Routes = [
@@ -49,7 +50,8 @@ const appRoutes : Routes = [
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatGridListModule
+    MatGridListModule,
+    MatToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
